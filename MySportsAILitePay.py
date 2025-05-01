@@ -83,7 +83,7 @@ with header:
   render_image("MLImage5.png")
   st.title('MySportsAILite (Susbscription)')
 
-if not st.experimental.user.is_logged_in:
+if not st.experimental_user.is_logged_in:
     st.write("Create your own ratings using MySportsAI Machine Learning models pre trained on 10 years of data")
     st.write("Please log in to access this app")
     if st.button("Log in"):
