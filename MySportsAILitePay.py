@@ -78,7 +78,7 @@ inputs = st.container(height=None)
 
 with header:
   render_image("MLImage5.png")
-  st.title('MySportsAILite (Susbscription)')
+  st.title('MySportsAILite (Subscription)')
 
 if not st.experimental_user.is_logged_in:
     st.write("Create your own ratings using MySportsAI Machine Learning models pre trained on 10 years of data")
