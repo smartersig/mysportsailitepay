@@ -1,3 +1,6 @@
+import requests
+import csv
+
 import streamlit as st
 from st_paywall import add_auth
 
@@ -71,6 +74,7 @@ def predModel():
 
 #########################################
 
+
 st.set_page_config(layout="wide")
 
 header = st.container()
@@ -96,32 +100,35 @@ else:
     trackTime = tt[0][0:4] + ' ' + tt[1]
     trackTimes.append(trackTime)
 
-  trackTime = decs.iloc[0]['trackTimeDate']
-  tt = trackTime.split('_')
-  trackTime = tt[0][0:4] + ' ' + tt[1]
-  horses = decs['horse']
+  if len(trackTimes) == 0:
+    str.write("No grade 1 to 4 Handicaps today")
+  else:
+    trackTime = decs.iloc[0]['trackTimeDate']
+    tt = trackTime.split('_')
+    trackTime = tt[0][0:4] + ' ' + tt[1]
+    horses = decs['horse']
 
-  with inputs:
-    inputcol, rescol = st.columns([1, 1])
-    with inputcol:
-      st.subheader('Choose Inputs')
-      cl = st.checkbox('Class Move')
-      da = st.checkbox('Days Since Last Run')
-      tr = st.checkbox('Trainer Strike Rate')
-      jo = st.checkbox('Jockey Strike Rate')
-      si = st.checkbox('Sire Strike Rate')
-      pa = st.checkbox('Pace Figure')
+    with inputs:
+      inputcol, rescol = st.columns([1, 1])
+      with inputcol:
+        st.subheader('Choose Inputs')
+        cl = st.checkbox('Class Move')
+        da = st.checkbox('Days Since Last Run')
+        tr = st.checkbox('Trainer Strike Rate')
+        jo = st.checkbox('Jockey Strike Rate')
+        si = st.checkbox('Sire Strike Rate')
+        pa = st.checkbox('Pace Figure')
     
-      cols = createCols()
+        cols = createCols()
 
-  try:
-    decs = decs[cols]
-  except Exception as e:
-    print ('error ',e)
+    try:
+      decs = decs[cols]
+    except Exception as e:
+      print ('error ',e)
 
-  with inputs:
-    with inputcol:
-      if st.button("Predict"):
-        predModel()
-      st.write('MySportsAI has over 90 predictors to choose from www.smartersig.com/mysportsai.php')
+    with inputs:
+      with inputcol:
+        if st.button("Predict"):
+          predModel()
+        st.write('MySportsAI has over 90 predictors to choose from www.smartersig.com/mysportsai.php')
 
