@@ -74,7 +74,6 @@ def predModel():
 
 #########################################
 
-
 st.set_page_config(layout="wide")
 
 header = st.container()
@@ -92,13 +91,22 @@ if not st.experimental_user.is_logged_in:
 else:
   add_auth(required=True) 
 
-  decs = pd.read_csv('http://www.smartersig.com/mysportsaisamplepay.csv')
+  #decs = pd.read_csv('http://www.smartersig.com/mysportsaisamplepay.csv')
+
+  response = requests.get('http://www.smartersig.com/utils/mysportsaisamplepay.csv', auth=(st.secrets['siguser'], st.secrets['sigpassw']), verify=False)
+  decoded_content = response.content.decode('utf-8')
+  cr = csv.reader(decoded_content.splitlines(), delimiter=',')
+  my_list = list(cr)
+  decs = pd.DataFrame(my_list) #, index=None)
 
   trackTimes = []
-  for index,row in decs.iterrows():
-    tt = row['trackTimeDate'].split('_')
-    trackTime = tt[0][0:4] + ' ' + tt[1]
-    trackTimes.append(trackTime)
+  try:
+    for index,row in decs.iterrows():
+      tt = row['trackTimeDate'].split('_')
+      trackTime = tt[0][0:4] + ' ' + tt[1]
+      trackTimes.append(trackTime)
+  except:
+    pass
 
   if len(trackTimes) == 0:
     str.write("No grade 1 to 4 Handicaps today")
