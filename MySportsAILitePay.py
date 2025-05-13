@@ -109,7 +109,7 @@ else:
     pass
 
   if len(trackTimes) == 0:
-    str.write('No grade 1 to 4 Handicaps today')
+    st.write('No grade 1 to 4 Handicaps today')
   else:
     trackTime = decs.iloc[0]['trackTimeDate']
     tt = trackTime.split('_')
