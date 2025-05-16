@@ -48,6 +48,7 @@ def predModel():
       with open(fileName, "rb") as f:
         m = pickle.load(f)
         for col in cols:
+          decs[col] = pd.to_numeric(decs[col], errors='coerce') # convert from string to numeric or NaN
           decs[col] = decs[col].fillna(m.repNaNs[col])
 
       preds = m.predict_proba(decs)
@@ -91,7 +92,12 @@ if not st.experimental_user.is_logged_in:
 else:
   add_auth(required=True) 
 
-  decs = pd.read_csv('http://www.smartersig.com/mysportsaisamplepay.csv')
+  #decs = pd.read_csv('http://www.smartersig.com/mysportsaisamplepay.csv')
+
+  response = requests.get('http://www.smartersig.com/utils/mysportsaisamplepay.csv', auth=(st.secrets['siguser'], st.secrets['sigpassw']), verify=False)
+  decoded_content = response.content.decode('utf-8')
+  cr = csv.reader(decoded_content.splitlines(), delimiter=',')
+  my_list = list(cr)
 
   #response = requests.get('http://www.smartersig.com/utils/mysportsaisamplepay.csv', auth=(st.secrets['siguser'], st.secrets['sigpassw']), verify=False)
   #decoded_content = response.content.decode('utf-8')
@@ -101,6 +107,10 @@ else:
 
   trackTimes = []
   try:
+
+    header = my_list[0]
+    decs = pd.DataFrame(my_list[1:], columns=header)
+
     for index,row in decs.iterrows():
       tt = row['trackTimeDate'].split('_')
       trackTime = tt[0][0:4] + ' ' + tt[1]
@@ -111,6 +121,8 @@ else:
   if len(trackTimes) == 0:
     st.write('No grade 1 to 4 Handicaps today')
   else:
+    #header = my_list[0]
+    #decs = pd.DataFrame(my_list[1:], columns=header)
     trackTime = decs.iloc[0]['trackTimeDate']
     tt = trackTime.split('_')
     trackTime = tt[0][0:4] + ' ' + tt[1]
