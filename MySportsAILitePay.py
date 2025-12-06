@@ -90,7 +90,9 @@ if not st.user.is_logged_in:
     if st.button("Log in"):
         st.login("google")
 else:
+  st.write('check auth')
   add_auth(required=True) 
+  st.write('auth checked')
 
   #decs = pd.read_csv('http://www.smartersig.com/mysportsaisamplepay.csv')
 
