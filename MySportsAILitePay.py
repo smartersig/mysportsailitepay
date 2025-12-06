@@ -83,7 +83,7 @@ inputs = st.container(height='stretch')
 with header:
   render_image("MLImage5.png")
   st.title('MySportsAILite (Subscription)')
-
+  st.write(st.user.is_logged_in)
 if not st.user.is_logged_in:
     st.write("Create your own ratings using MySportsAI Machine Learning models pre trained on 10 years of data")
     st.write("Please log in to access this app")
@@ -92,7 +92,6 @@ if not st.user.is_logged_in:
 else:
   st.write('check auth')
   add_auth(required=True) 
-  st.write('auth checked')
 
   #decs = pd.read_csv('http://www.smartersig.com/mysportsaisamplepay.csv')
 
